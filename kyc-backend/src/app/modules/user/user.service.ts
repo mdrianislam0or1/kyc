@@ -1,3 +1,4 @@
+// user.service.ts
 import httpStatus from 'http-status';
 import ApplicationError from '../../errorHandler/ApplicationError';
 import { TUser } from './user.interface';
@@ -10,6 +11,22 @@ const createUserIntoDB = async (userData: TUser): Promise<TUser> => {
     email: userData.email,
     password: userData.password,
     role: userData.role || 'user',
+    fullName: userData.fullName,
+    dateOfBirth: userData.dateOfBirth,
+    nationality: userData.nationality,
+    residentialAddress: userData.residentialAddress,
+    contactNumber: userData.contactNumber,
+    identificationType: userData.identificationType,
+    identificationNumber: userData.identificationNumber,
+    issueDate: userData.issueDate,
+    expirationDate: userData.expirationDate,
+    signature: userData.signature,
+    photograph: userData.photograph,
+    occupation: userData.occupation,
+    employer: userData.employer,
+    tin: userData.tin,
+    sourceOfFunds: userData.sourceOfFunds,
+    purposeOfAccount: userData.purposeOfAccount,
   });
 
   return user.save();

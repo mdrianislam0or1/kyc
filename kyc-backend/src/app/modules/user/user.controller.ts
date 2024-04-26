@@ -1,3 +1,4 @@
+// user.controller.ts
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -5,7 +6,7 @@ import { TUser } from './user.interface';
 import { UserServices } from './user.service';
 import { decodeToken } from '../../utils/hashOrDecodePW';
 import config from '../../config';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 const UserController = catchAsync(async (req, res) => {
   try {
@@ -18,6 +19,8 @@ const UserController = catchAsync(async (req, res) => {
       nid: user.nid,
       email: user.email,
       role: user.role,
+      fullName: user.fullName,
+      // Include other fields here
     };
 
     sendResponse(res, {
@@ -49,6 +52,22 @@ const userLoginController = catchAsync(async (req, res) => {
         nid: user.nid,
         role: user.role,
         email: user.email,
+        fullName: user.fullName,
+        dateOfBirth: user.dateOfBirth,
+        nationality: user.nationality,
+        residentialAddress: user.residentialAddress,
+        contactNumber: user.contactNumber,
+        identificationType: user.identificationType,
+        identificationNumber: user.identificationNumber,
+        issueDate: user.issueDate,
+        expirationDate: user.expirationDate,
+        signature: user.signature,
+        photograph: user.photograph,
+        occupation: user.occupation,
+        employer: user.employer,
+        tin: user.tin,
+        sourceOfFunds: user.sourceOfFunds,
+        purposeOfAccount: user.purposeOfAccount,
       },
       config.jwt_secret as string,
       {
@@ -64,6 +83,22 @@ const userLoginController = catchAsync(async (req, res) => {
         nid: user.nid,
         email: user.email,
         role: user.role,
+        fullName: user.fullName,
+        dateOfBirth: user.dateOfBirth,
+        nationality: user.nationality,
+        residentialAddress: user.residentialAddress,
+        contactNumber: user.contactNumber,
+        identificationType: user.identificationType,
+        identificationNumber: user.identificationNumber,
+        issueDate: user.issueDate,
+        expirationDate: user.expirationDate,
+        signature: user.signature,
+        photograph: user.photograph,
+        occupation: user.occupation,
+        employer: user.employer,
+        tin: user.tin,
+        sourceOfFunds: user.sourceOfFunds,
+        purposeOfAccount: user.purposeOfAccount,
       },
       token,
     };

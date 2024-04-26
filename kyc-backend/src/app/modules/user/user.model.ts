@@ -27,6 +27,22 @@ const userSchema = new Schema<TUser, UserModel>({
     enum: ['user', 'manager', 'superAdmin'],
     default: 'user',
   },
+  fullName: String,
+  dateOfBirth: Date,
+  nationality: String,
+  residentialAddress: String,
+  contactNumber: String,
+  identificationType: String,
+  identificationNumber: String,
+  issueDate: Date,
+  expirationDate: Date,
+  signature: String,
+  photograph: String,
+  occupation: String,
+  employer: String,
+  tin: String,
+  sourceOfFunds: String,
+  purposeOfAccount: String,
 });
 
 userSchema.pre('save', async function (next) {

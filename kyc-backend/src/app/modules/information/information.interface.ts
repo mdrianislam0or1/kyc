@@ -22,6 +22,4 @@ export interface TKYCInformation {
   purposeOfAccount: string;
 }
 
-export interface KYCInformationModel extends Model<TKYCInformation> {
-  // Add any custom static methods if required
-}
+export interface KYCInformationModel extends Model<TKYCInformation> {}
