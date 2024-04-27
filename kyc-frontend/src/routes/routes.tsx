@@ -2,6 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 import CustomerRegistration from "../pages/Customer/CustomerRegistration";
 import CustomerLogin from "../pages/Customer/CustomerLogin";
 import Home from "../components/Home";
+import FinancialInstituteLogin from "../pages/FinancialInstitute/FinancialInstituteLogin";
+import FinancialInstituteRegister from "../pages/FinancialInstitute/FinancialInstituteRegister";
+import CentralBank from "../pages/CentralBank/CentralBankLogin";
+import GetAllCustomer from "../pages/CentralBank/GetAllCustomer";
+import GetAllFinancialInstitute from "../pages/FinancialInstitute/GetAllFinancialInstitute";
 
 const router = createBrowserRouter([
   {
@@ -23,12 +28,28 @@ const router = createBrowserRouter([
     element: <CustomerRegistration />,
   },
   {
+    path: "/bank-login",
+    element: <CentralBank />,
+  },
+  {
+    path: "/institute-registration",
+    element: <FinancialInstituteRegister />,
+  },
+  {
     path: "/customer-login",
     element: <CustomerLogin />,
   },
   {
-    path: "/dashboard",
-    // element: <Dashboard />,
+    path: "/institute-login",
+    element: <FinancialInstituteLogin />,
+  },
+  {
+    path: "/all-institute",
+    element: <GetAllFinancialInstitute />,
+  },
+  {
+    path: "/superAdmin/dashboard",
+    element: <GetAllCustomer />,
     children: [
       // {
       //     path: "/profile",

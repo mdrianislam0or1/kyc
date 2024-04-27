@@ -57,7 +57,19 @@ const loginUserFromDB = async (nid: string, password: string) => {
   }
 };
 
+const getAllUsers = async () => {
+  try {
+    return await User.find();
+  } catch (error) {
+    throw new ApplicationError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Error while fetching users',
+    );
+  }
+};
+
 export const UserServices = {
   createUserIntoDB,
   loginUserFromDB,
+  getAllUsers,
 };

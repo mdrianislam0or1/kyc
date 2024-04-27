@@ -20,7 +20,21 @@ const UserController = catchAsync(async (req, res) => {
       email: user.email,
       role: user.role,
       fullName: user.fullName,
-      // Include other fields here
+      dateOfBirth: user.dateOfBirth,
+      nationality: user.nationality,
+      residentialAddress: user.residentialAddress,
+      contactNumber: user.contactNumber,
+      identificationType: user.identificationType,
+      identificationNumber: user.identificationNumber,
+      issueDate: user.issueDate,
+      expirationDate: user.expirationDate,
+      signature: user.signature,
+      photograph: user.photograph,
+      occupation: user.occupation,
+      employer: user.employer,
+      tin: user.tin,
+      sourceOfFunds: user.sourceOfFunds,
+      purposeOfAccount: user.purposeOfAccount,
     };
 
     sendResponse(res, {
@@ -119,7 +133,28 @@ const userLoginController = catchAsync(async (req, res) => {
   }
 });
 
+const getAllUsersController = catchAsync(async (req, res) => {
+  try {
+    const users = await UserServices.getAllUsers();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Users retrieved successfully',
+      data: users,
+    });
+  } catch (error: any) {
+    sendResponse(res, {
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      success: false,
+      message: 'Internal server error',
+      errorMessage: error.message,
+      errorDetails: error,
+    });
+  }
+});
+
 export const UserControllers = {
   UserController,
   userLoginController,
+  getAllUsersController,
 };

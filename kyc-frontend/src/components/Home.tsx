@@ -19,7 +19,7 @@ const Home = () => {
           </CardLink>
         </Card>
         <Card color="#6BFF8B">
-          <CardLink to="/financial-institution-registration">
+          <CardLink to="/institute-registration">
             <CardContent>
               <IconWrapper>
                 <AiOutlineBuild size={40} />
@@ -29,7 +29,7 @@ const Home = () => {
           </CardLink>
         </Card>
         <Card color="#6B8BFF">
-          <CardLink to="/bank-registration">
+          <CardLink to="/bank-login">
             <CardContent>
               <IconWrapper>
                 <AiOutlineBank size={40} />

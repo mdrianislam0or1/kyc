@@ -121,10 +121,10 @@ const Navbar: React.FC = () => {
               <Link to="/customer-login">Login</Link>
             </li>
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/institute-login">FN-Login</Link>
             </li>
             <li>
-              <Link to="/contact">Contact</Link>
+              <Link to="/all-institute">Financial Institute</Link>
             </li>
           </ul>
         </NavElements>

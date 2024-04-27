@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice";
-
+import customerReducer from "./features/Customer/customerSlice";
+import instituteReducer from "./features/FNInstitute/instituteSlice";
 import {
   persistReducer,
   persistStore,
@@ -13,6 +14,8 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { baseApi } from "./api/baseApi";
+import { customerApi } from "./features/Customer/customerApi";
+import { instituteApi } from "./features/FNInstitute/instituteApi";
 
 const persistConfig = {
   key: "auth",
@@ -25,12 +28,12 @@ export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedAuthReducer,
-    // book: bookReducer,
-    // sales: salesReducer,
+    customer: customerReducer,
+    institute: instituteReducer,
     // cart: cartReducer,
 
-    // [bookApi.reducerPath]: bookApi.reducer,
-    // [salesApi.reducerPath]: salesApi.reducer,
+    [customerApi.reducerPath]: customerApi.reducer,
+    [instituteApi.reducerPath]: instituteApi.reducer,
     // [cartApi.reducerPath]: cartApi.reducer,
   },
   middleware: (getDefaultMiddlewares) =>
@@ -39,9 +42,9 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }).concat(
-      baseApi.middleware
-      //   bookApi.middleware,
-      //   salesApi.middleware,
+      baseApi.middleware,
+      customerApi.middleware,
+      instituteApi.middleware
       //   cartApi.middleware
     ),
 });
