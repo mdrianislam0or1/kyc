@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 import {
@@ -7,14 +7,16 @@ import {
 } from './fnInstitute.interface';
 import { INSTITUTE_ROLE } from './fnInstitute.constant';
 
-const instituteSchema = new Schema<
-  TFinancialInstitute,
-  FinancialInstituteModel
->({
+const instituteSchema = new Schema<TFinancialInstitute>({
   name: {
     type: String,
     required: true,
   },
+  otp: {
+    type: String,
+    default: null,
+  },
+
   registrationNumber: {
     type: String,
     unique: true,
@@ -34,11 +36,14 @@ const instituteSchema = new Schema<
     enum: Object.values(INSTITUTE_ROLE),
     default: 'other',
   },
+
   fullName: String,
   address: String,
   contactNumber: String,
   website: String,
   financialLicense: String,
+  users: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Reference to users
+  verify: { type: Boolean, default: false }, // Verification status
 });
 
 instituteSchema.pre('save', async function (next) {

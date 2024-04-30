@@ -126,6 +126,9 @@ const Navbar: React.FC = () => {
             <li>
               <Link to="/all-institute">Financial Institute</Link>
             </li>
+            <li>
+              <Link to="/add-users-request"> Add Customer</Link>
+            </li>
           </ul>
         </NavElements>
       </Container>

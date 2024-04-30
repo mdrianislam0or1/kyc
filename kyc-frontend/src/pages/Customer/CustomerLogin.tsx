@@ -67,7 +67,7 @@ const CustomerLogin = () => {
       console.log("Logged in", user);
       console.log("Logged in", res.data.token);
       toast.success("Logged in", { id: toastId, duration: 2000 });
-      navigate(`/${user.role}/dashboard`);
+      navigate(`/${user.role}/customer-profile`);
     } catch (error) {
       toast.error("Error logging in");
     }

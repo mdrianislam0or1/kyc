@@ -9,6 +9,7 @@ export const customerApi = createApi({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers, { getState }) => {
       const token = useCurrentToken(getState() as RootState);
+      console.log("customer Token: ", token);
       if (token) {
         headers.set("Authorization", `${token}`);
       }
@@ -27,6 +28,9 @@ export const customerApi = createApi({
     }),
     getCustomers: builder.query({
       query: () => "/auth/users",
+    }),
+    getCustomer: builder.query({
+      query: () => "/auth/profile",
     }),
     getSingleCustomer: builder.query({
       query: (customerId) => `/customer/${customerId}`,
@@ -67,6 +71,7 @@ export const customerApi = createApi({
 export const {
   useAddCustomerMutation,
   useGetCustomersQuery,
+  useGetCustomerQuery,
   useGetSingleCustomerQuery,
   useDeleteCustomerMutation,
   useDeleteCustomersMutation,

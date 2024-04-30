@@ -4,6 +4,7 @@ import { useGetInstitutesQuery } from "../../redux/features/FNInstitute/institut
 import Loader from "../../ui/Loader";
 import GetAllFnInstituteCard from "../../components/card/GetAllFnInstituteCard";
 import { TInstitute } from "../../redux/features/FNInstitute/instituteSlice";
+import NavigationBar from "../../components/layout/NavigationBar";
 
 const GetAllFinancialInstitute = () => {
   const {
@@ -37,7 +38,12 @@ const GetAllFinancialInstitute = () => {
     );
   }
 
-  return <Wrapper>{content}</Wrapper>;
+  return (
+    <>
+      <NavigationBar />
+      <Wrapper>{content}</Wrapper>
+    </>
+  );
 };
 
 export default GetAllFinancialInstitute;

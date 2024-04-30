@@ -68,8 +68,20 @@ const getAllUsers = async () => {
   }
 };
 
+const getUserData = async (userId: string) => {
+  try {
+    return await User.findById(userId).select('-password');
+  } catch (error) {
+    throw new ApplicationError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Error while fetching user data',
+    );
+  }
+};
+
 export const UserServices = {
   createUserIntoDB,
   loginUserFromDB,
   getAllUsers,
+  getUserData,
 };

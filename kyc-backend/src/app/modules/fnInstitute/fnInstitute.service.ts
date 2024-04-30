@@ -2,6 +2,8 @@ import httpStatus from 'http-status';
 import ApplicationError from '../../errorHandler/ApplicationError';
 import { TFinancialInstitute } from './fnInstitute.interface';
 import { FinancialInstitute } from './fnInstitute.model';
+import { User } from '../user/user.model';
+import { sendOTP } from '../../utils/sendOTP';
 
 const createInstituteIntoDB = async (
   instituteData: TFinancialInstitute,
@@ -51,13 +53,68 @@ const getAllInstitutesFromDB = async (): Promise<TFinancialInstitute[]> => {
   }
 };
 
-const getAllInstitutes = async () => {
+const addUsersRequestToInstitute = async (
+  instituteId: string,
+  userNIDs: string[],
+): Promise<void> => {
   try {
-    return await FinancialInstitute.find();
+    const institute = await FinancialInstitute.findById(instituteId);
+    if (!institute) {
+      throw new Error('Financial institute not found');
+    }
+
+    for (const nid of userNIDs) {
+      const user = await User.findOne({ nid });
+      const OTP = Math.floor(100000 + Math.random() * 900000).toString();
+
+      if (user) {
+        user.otp = OTP;
+        institute.verify = false;
+        await sendOTP(user.email, OTP);
+        await user.save();
+      }
+    }
+
+    await institute.save();
   } catch (error) {
     throw new ApplicationError(
       httpStatus.INTERNAL_SERVER_ERROR,
-      'Error while fetching institutions',
+      'Error while adding users to institute',
+    );
+  }
+};
+
+const verifyAndaddUsersToInstitute = async (
+  instituteId: string,
+  userNIDs: string[],
+  otp: string,
+): Promise<void> => {
+  try {
+    const institute = await FinancialInstitute.findById(instituteId);
+    if (!institute) {
+      throw new Error('Financial institute not found');
+    }
+
+    for (const nid of userNIDs) {
+      const user = await User.findOne({ nid });
+
+      if (user && user.otp === otp && !institute.users.includes(user._id)) {
+        institute.users.push(user._id);
+        institute.verify = true;
+        await user.save();
+        await institute.save();
+      }
+      // if (user && institute.users.includes(user._id)) {
+      //   throw new ApplicationError(
+      //     httpStatus.INTERNAL_SERVER_ERROR,
+      //     'duplicate addition users to institute',
+      //   );
+      // }
+    }
+  } catch (error) {
+    throw new ApplicationError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Error while adding users to institute',
     );
   }
 };
@@ -66,4 +123,6 @@ export const InstituteServices = {
   createInstituteIntoDB,
   loginInstituteFromDB,
   getAllInstitutesFromDB,
+  addUsersRequestToInstitute,
+  verifyAndaddUsersToInstitute,
 };

@@ -8,7 +8,6 @@ import NavigationBar from "../../components/layout/NavigationBar";
 
 const FinancialInstituteLogin = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     registrationNumber: "1234567890",
     password: "password123",
@@ -18,7 +17,6 @@ const FinancialInstituteLogin = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
     const toastId = toast.loading("Logging in");
     try {
@@ -30,7 +28,6 @@ const FinancialInstituteLogin = () => {
     } catch (error) {
       toast.error("Error logging in");
     }
-    setLoading(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

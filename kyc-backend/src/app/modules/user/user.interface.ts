@@ -7,6 +7,8 @@ export interface TUser {
   nid: string;
   email: string;
   password: string;
+  adduserID?: string;
+  otp?: string; // Add OTP field
   role: keyof typeof USER_ROLE;
   fullName: string;
   dateOfBirth: Date;

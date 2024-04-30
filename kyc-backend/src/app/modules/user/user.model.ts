@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 import { TUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
+import { string } from 'joi';
 
 const userSchema = new Schema<TUser, UserModel>({
   username: {
@@ -27,6 +28,8 @@ const userSchema = new Schema<TUser, UserModel>({
     enum: ['user', 'manager', 'superAdmin'],
     default: 'user',
   },
+  adduserID: String,
+  otp: String, // Add OTP field to the schema
   fullName: String,
   dateOfBirth: Date,
   nationality: String,

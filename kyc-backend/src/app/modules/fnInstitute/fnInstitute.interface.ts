@@ -1,7 +1,8 @@
-import { Model } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { INSTITUTE_ROLE } from './fnInstitute.constant';
+import { TUser } from '../user/user.interface';
 
-export interface TFinancialInstitute {
+export interface TFinancialInstitute extends Document {
   _id: string;
   name: string;
   registrationNumber: string;
@@ -13,6 +14,9 @@ export interface TFinancialInstitute {
   contactNumber: string;
   website: string;
   financialLicense: string;
+  users: TUser['_id'][]; // Array of user IDs
+  verify: boolean; // Verification status
+  otp?: string;
 }
 
 export interface FinancialInstituteModel extends Model<TFinancialInstitute> {

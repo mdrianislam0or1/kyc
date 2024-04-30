@@ -5,6 +5,7 @@ import { TFinancialInstitute } from './fnInstitute.interface';
 import { InstituteServices } from './fnInstitute.service';
 import jwt from 'jsonwebtoken';
 import config from '../../config';
+import ApplicationError from '../../errorHandler/ApplicationError';
 
 const instituteRegisterController = catchAsync(async (req, res) => {
   try {
@@ -117,8 +118,56 @@ const getAllInstitutesController = catchAsync(async (req, res) => {
   }
 });
 
+const addUsersToInstituteController = catchAsync(async (req, res) => {
+  try {
+    const { instituteId, userNIDs } = req.body;
+    await InstituteServices.addUsersRequestToInstitute(instituteId, userNIDs);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Users added Request and send OTP to institute successfully',
+    });
+  } catch (error: any) {
+    sendResponse(res, {
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      success: false,
+      message: 'Internal server error',
+      errorMessage: error.message,
+      errorDetails: error,
+    });
+  }
+});
+
+const verifyAndaddUsersToInstituteController = catchAsync(async (req, res) => {
+  try {
+    const { instituteId, userNIDs, otp } = req.body;
+    await InstituteServices.verifyAndaddUsersToInstitute(
+      instituteId,
+      userNIDs,
+      otp,
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Users added to institute successfully',
+    });
+  } catch (error: any) {
+    sendResponse(res, {
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      success: false,
+      message: 'Internal server error',
+      errorMessage: error.message,
+      errorDetails: error,
+    });
+  }
+});
+
 export const InstituteControllers = {
   instituteRegisterController,
   instituteLoginController,
   getAllInstitutesController,
+  addUsersToInstituteController,
+  verifyAndaddUsersToInstituteController,
 };

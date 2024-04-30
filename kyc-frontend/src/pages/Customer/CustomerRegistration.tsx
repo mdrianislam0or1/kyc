@@ -2,20 +2,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useAppDispatch } from "../../redux/hooks";
 import { useRegisterMutation } from "../../redux/features/auth/authApi";
 import styled from "styled-components";
 import NavigationBar from "../../components/layout/NavigationBar";
 
 const CustomerRegistration = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    username: "testuser11",
-    nid: "11111",
-    email: "test11@example.com",
-    password: "password123",
+    username: "Rian Islam",
+    nid: "11",
+    email: "rianislam35@gmail.com",
+    password: "admin",
     role: "user",
     fullName: "John Doe",
     dateOfBirth: "1990-05-15",
@@ -39,7 +36,6 @@ const CustomerRegistration = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
     const toastId = toast.loading("Registering");
     try {
@@ -50,7 +46,6 @@ const CustomerRegistration = () => {
     } catch (error) {
       toast.error("Error registering");
     }
-    setLoading(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

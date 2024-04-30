@@ -153,8 +153,39 @@ const getAllUsersController = catchAsync(async (req, res) => {
   }
 });
 
+const getUserDataController = catchAsync(async (req, res) => {
+  try {
+    const userId = req.user._id; // Assuming req.user is set by the authentication middleware
+    const userData = await UserServices.getUserData(userId);
+    if (!userData) {
+      sendResponse(res, {
+        statusCode: httpStatus.NOT_FOUND,
+        success: false,
+        message: 'User data not found',
+        data: null,
+      });
+      return;
+    }
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User data retrieved successfully',
+      data: userData,
+    });
+  } catch (error: any) {
+    sendResponse(res, {
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      success: false,
+      message: 'Internal server error',
+      errorMessage: error.message,
+      errorDetails: error,
+    });
+  }
+});
+
 export const UserControllers = {
   UserController,
   userLoginController,
   getAllUsersController,
+  getUserDataController,
 };

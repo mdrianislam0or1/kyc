@@ -4,7 +4,7 @@ import { User } from '../modules/user/user.model';
 
 const superUser = {
   username: 'rian',
-  email: 'rian@gmail.com',
+  email: 'rianislam.coder@gmail.com',
   nid: '1', // "12345678901234567890" is a placeholder
   password: config.supper_admin_password,
   role: USER_ROLE.superAdmin,

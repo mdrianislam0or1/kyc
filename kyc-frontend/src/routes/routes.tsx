@@ -7,6 +7,9 @@ import FinancialInstituteRegister from "../pages/FinancialInstitute/FinancialIns
 import CentralBank from "../pages/CentralBank/CentralBankLogin";
 import GetAllCustomer from "../pages/CentralBank/GetAllCustomer";
 import GetAllFinancialInstitute from "../pages/FinancialInstitute/GetAllFinancialInstitute";
+import CustomerProfile from "../pages/Customer/CustomerProfile";
+import AddUserRequest from "../pages/FinancialInstitute/AddUserRequest";
+import VerifyCustomer from "../pages/FinancialInstitute/VerifyCustomer";
 
 const router = createBrowserRouter([
   {
@@ -24,8 +27,20 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/verify-otp",
+    element: <VerifyCustomer />,
+  },
+  {
+    path: "/add-users-request",
+    element: <AddUserRequest />,
+  },
+  {
     path: "/customer-registration",
     element: <CustomerRegistration />,
+  },
+  {
+    path: "/user/customer-profile",
+    element: <CustomerProfile />,
   },
   {
     path: "/bank-login",

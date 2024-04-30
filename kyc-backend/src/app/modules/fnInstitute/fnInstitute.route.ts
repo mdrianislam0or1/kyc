@@ -13,5 +13,14 @@ router.post(
 router.post('/login', InstituteControllers.instituteLoginController);
 
 router.get('/all', InstituteControllers.getAllInstitutesController);
+router.post(
+  '/add-users-request',
+  InstituteControllers.addUsersToInstituteController,
+);
+
+router.post(
+  '/verify-otp',
+  InstituteControllers.verifyAndaddUsersToInstituteController,
+);
 
 export const InstituteRoutes = router;

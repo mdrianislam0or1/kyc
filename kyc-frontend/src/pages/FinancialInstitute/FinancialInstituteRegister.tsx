@@ -8,7 +8,6 @@ import NavigationBar from "../../components/layout/NavigationBar";
 
 const FinancialInstituteRegister = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "ABC Bank",
     registrationNumber: "1234567890",
@@ -26,7 +25,6 @@ const FinancialInstituteRegister = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
     const toastId = toast.loading("Registering");
     try {
@@ -37,7 +35,6 @@ const FinancialInstituteRegister = () => {
     } catch (error) {
       toast.error("Error registering");
     }
-    setLoading(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

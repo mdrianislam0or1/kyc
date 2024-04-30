@@ -15,4 +15,6 @@ router.post('/login', UserControllers.userLoginController);
 
 router.get('/users', auth('superAdmin'), UserControllers.getAllUsersController);
 
+router.get('/profile', auth('user'), UserControllers.getUserDataController);
+
 export const UserRouters = router;

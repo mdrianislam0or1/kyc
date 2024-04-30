@@ -28,37 +28,27 @@ export const instituteApi = createApi({
     getInstitutes: builder.query({
       query: () => "/fnInstitute/all",
     }),
-    getSingleInstitute: builder.query({
-      query: (instituteId) => `/institute/${instituteId}`,
-    }),
-    updateInstitute: builder.mutation({
-      query: ({ instituteId, instituteData }) => ({
-        url: `/institute/${instituteId}`,
-        method: "PUT",
-        body: instituteData,
-      }),
-    }),
 
-    deleteInstitute: builder.mutation({
-      query: (instituteId) => ({
-        url: `/institute/${instituteId}`,
-        method: "DELETE",
-      }),
-    }),
-
-    deleteInstitutes: builder.mutation({
-      query: (instituteIds) => ({
-        url: "/institute/",
-        method: "DELETE",
-        body: { instituteIds },
-      }),
-    }),
-
-    filterInstitutes: builder.mutation({
-      query: (filters) => ({
-        url: "/institute/filter",
+    addUsersRequest: builder.mutation({
+      query: ({ instituteId, userNIDs }) => ({
+        url: "/fnInstitute/add-users-request",
         method: "POST",
-        body: filters,
+        body: {
+          instituteId,
+          userNIDs,
+        },
+      }),
+    }),
+
+    verifyOTP: builder.mutation({
+      query: ({ instituteId, userNIDs, otp }) => ({
+        url: "/fnInstitute/verify-otp",
+        method: "POST",
+        body: {
+          instituteId,
+          userNIDs,
+          otp,
+        },
       }),
     }),
   }),
@@ -67,9 +57,6 @@ export const instituteApi = createApi({
 export const {
   useAddInstituteMutation,
   useGetInstitutesQuery,
-  useGetSingleInstituteQuery,
-  useDeleteInstituteMutation,
-  useDeleteInstitutesMutation,
-  useUpdateInstituteMutation,
-  useFilterInstitutesMutation,
+  useAddUsersRequestMutation,
+  useVerifyOTPMutation,
 } = instituteApi;
