@@ -14,8 +14,8 @@ export interface TFinancialInstitute extends Document {
   contactNumber: string;
   website: string;
   financialLicense: string;
-  users: TUser['_id'][]; // Array of user IDs
-  verify: boolean; // Verification status
+  users: TUser['_id'][];
+  verify: boolean;
   otp?: string;
 }
 
