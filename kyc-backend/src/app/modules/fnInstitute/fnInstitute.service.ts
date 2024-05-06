@@ -119,10 +119,22 @@ const verifyAndaddUsersToInstitute = async (
   }
 };
 
+const getSingleInstituteWithUsers = async (
+  instituteId: string,
+): Promise<TFinancialInstitute | null> => {
+  try {
+    return await FinancialInstitute.findById(instituteId)
+      .populate('users')
+      .exec();
+  } catch (error) {
+    throw new Error('Error while fetching institute with users');
+  }
+};
 export const InstituteServices = {
   createInstituteIntoDB,
   loginInstituteFromDB,
   getAllInstitutesFromDB,
   addUsersRequestToInstitute,
   verifyAndaddUsersToInstitute,
+  getSingleInstituteWithUsers,
 };

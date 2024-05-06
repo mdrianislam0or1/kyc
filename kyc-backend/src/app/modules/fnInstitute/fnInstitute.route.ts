@@ -23,4 +23,6 @@ router.post(
   InstituteControllers.verifyAndaddUsersToInstituteController,
 );
 
+router.get('/:id', InstituteControllers.getSingleInstituteWithUsersController);
+
 export const InstituteRoutes = router;

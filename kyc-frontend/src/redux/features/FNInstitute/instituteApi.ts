@@ -29,6 +29,10 @@ export const instituteApi = createApi({
       query: () => "/fnInstitute/all",
     }),
 
+    getSingleInstitute: builder.query({
+      query: (instituteId) => `/fnInstitute/${instituteId}`,
+    }),
+
     addUsersRequest: builder.mutation({
       query: ({ instituteId, userNIDs }) => ({
         url: "/fnInstitute/add-users-request",
@@ -57,6 +61,7 @@ export const instituteApi = createApi({
 export const {
   useAddInstituteMutation,
   useGetInstitutesQuery,
+  useGetSingleInstituteQuery,
   useAddUsersRequestMutation,
   useVerifyOTPMutation,
 } = instituteApi;

@@ -164,10 +164,33 @@ const verifyAndaddUsersToInstituteController = catchAsync(async (req, res) => {
   }
 });
 
+const getSingleInstituteWithUsersController = catchAsync(async (req, res) => {
+  try {
+    const instituteId = req.params.id; // Assuming the instituteId is passed as a route parameter
+    const instituteWithUsers =
+      await InstituteServices.getSingleInstituteWithUsers(instituteId);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Institute with verified users retrieved successfully',
+      data: instituteWithUsers,
+    });
+  } catch (error: any) {
+    sendResponse(res, {
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      success: false,
+      message: 'Internal server error',
+      errorMessage: error.message,
+      errorDetails: error,
+    });
+  }
+});
+
 export const InstituteControllers = {
   instituteRegisterController,
   instituteLoginController,
   getAllInstitutesController,
   addUsersToInstituteController,
   verifyAndaddUsersToInstituteController,
+  getSingleInstituteWithUsersController,
 };

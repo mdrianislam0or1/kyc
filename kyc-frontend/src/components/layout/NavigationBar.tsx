@@ -129,6 +129,9 @@ const Navbar: React.FC = () => {
             <li>
               <Link to="/add-users-request"> Add Customer</Link>
             </li>
+            <li>
+              <Link to="/institute/:id">Institue Details</Link>
+            </li>
           </ul>
         </NavElements>
       </Container>

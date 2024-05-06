@@ -10,6 +10,7 @@ import GetAllFinancialInstitute from "../pages/FinancialInstitute/GetAllFinancia
 import CustomerProfile from "../pages/Customer/CustomerProfile";
 import AddUserRequest from "../pages/FinancialInstitute/AddUserRequest";
 import VerifyCustomer from "../pages/FinancialInstitute/VerifyCustomer";
+import FinancialInProfile from "../pages/FinancialInstitute/FinancialInProfile";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: "/all-institute",
     element: <GetAllFinancialInstitute />,
+  },
+  {
+    path: "/institute/:instituteId",
+    element: <FinancialInProfile />,
   },
   {
     path: "/superAdmin/dashboard",

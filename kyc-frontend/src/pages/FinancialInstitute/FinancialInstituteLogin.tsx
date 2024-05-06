@@ -24,7 +24,7 @@ const FinancialInstituteLogin = () => {
       toast.success("Logged in successfully", { id: toastId, duration: 2000 });
       console.log(res);
       // Redirect to dashboard or any other page after successful login
-      navigate(`/dashboard`);
+      navigate(`/institute/${res.institute._id}`);
     } catch (error) {
       toast.error("Error logging in");
     }
