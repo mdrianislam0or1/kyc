@@ -29,7 +29,7 @@ const userSchema = new Schema<TUser, UserModel>({
     default: 'user',
   },
   adduserID: String,
-  otp: String, // Add OTP field to the schema
+  otp: String,
   fullName: String,
   dateOfBirth: Date,
   nationality: String,

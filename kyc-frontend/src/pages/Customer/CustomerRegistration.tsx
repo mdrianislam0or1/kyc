@@ -12,7 +12,7 @@ const CustomerRegistration = () => {
     username: "Rian Islam",
     nid: "11",
     email: "rianislam35@gmail.com",
-    password: "admin",
+    password: "11",
     role: "user",
     fullName: "John Doe",
     dateOfBirth: "1990-05-15",
@@ -42,7 +42,7 @@ const CustomerRegistration = () => {
       const res = await register(formData).unwrap();
       toast.success("Registered successfully", { id: toastId, duration: 2000 });
       console.log(res);
-      navigate(`/login`); // Redirect to login page after successful registration
+      navigate(`/login`);
     } catch (error) {
       toast.error("Error registering");
     }
@@ -336,10 +336,3 @@ const Button = styled.button`
   border-radius: 4px;
   cursor: pointer;
 `;
-
-// const FormImage = styled.img`
-//   width: 300px;
-//   height: 300px;
-//   object-fit: cover;
-//   border-radius: 10px;
-// `;

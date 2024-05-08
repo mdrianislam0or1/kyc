@@ -8,7 +8,7 @@ export interface TUser {
   email: string;
   password: string;
   adduserID?: string;
-  otp?: string; // Add OTP field
+  otp?: string;
   role: keyof typeof USER_ROLE;
   fullName: string;
   dateOfBirth: Date;

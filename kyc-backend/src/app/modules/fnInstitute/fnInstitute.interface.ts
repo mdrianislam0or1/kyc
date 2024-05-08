@@ -1,6 +1,6 @@
 import { Document, Model } from 'mongoose';
-import { INSTITUTE_ROLE } from './fnInstitute.constant';
 import { TUser } from '../user/user.interface';
+import { USER_ROLE } from '../user/user.constant';
 
 export interface TFinancialInstitute extends Document {
   _id: string;
@@ -8,14 +8,14 @@ export interface TFinancialInstitute extends Document {
   registrationNumber: string;
   email: string;
   password: string;
-  role: keyof typeof INSTITUTE_ROLE;
+  role: keyof typeof USER_ROLE;
   fullName: string;
   address: string;
   contactNumber: string;
   website: string;
   financialLicense: string;
-  users: TUser['_id'][];
-  verify: boolean;
+  users?: TUser['_id'][];
+  verify?: boolean;
   otp?: string;
 }
 

@@ -1,4 +1,3 @@
-// user.controller.ts
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -19,6 +18,7 @@ const UserController = catchAsync(async (req, res) => {
       nid: user.nid,
       email: user.email,
       role: user.role,
+      otp: user.otp,
       fullName: user.fullName,
       dateOfBirth: user.dateOfBirth,
       nationality: user.nationality,
@@ -57,7 +57,13 @@ const UserController = catchAsync(async (req, res) => {
 const userLoginController = catchAsync(async (req, res) => {
   try {
     const { nid, password } = req.body;
+
+    console.log('Received nid:', nid);
+    console.log('Received password:', password);
+
     const user = await UserServices.loginUserFromDB(nid, password);
+
+    console.log('Authenticated user:', user);
 
     const token = jwt.sign(
       {
@@ -69,19 +75,6 @@ const userLoginController = catchAsync(async (req, res) => {
         fullName: user.fullName,
         dateOfBirth: user.dateOfBirth,
         nationality: user.nationality,
-        residentialAddress: user.residentialAddress,
-        contactNumber: user.contactNumber,
-        identificationType: user.identificationType,
-        identificationNumber: user.identificationNumber,
-        issueDate: user.issueDate,
-        expirationDate: user.expirationDate,
-        signature: user.signature,
-        photograph: user.photograph,
-        occupation: user.occupation,
-        employer: user.employer,
-        tin: user.tin,
-        sourceOfFunds: user.sourceOfFunds,
-        purposeOfAccount: user.purposeOfAccount,
       },
       config.jwt_secret as string,
       {
@@ -100,19 +93,6 @@ const userLoginController = catchAsync(async (req, res) => {
         fullName: user.fullName,
         dateOfBirth: user.dateOfBirth,
         nationality: user.nationality,
-        residentialAddress: user.residentialAddress,
-        contactNumber: user.contactNumber,
-        identificationType: user.identificationType,
-        identificationNumber: user.identificationNumber,
-        issueDate: user.issueDate,
-        expirationDate: user.expirationDate,
-        signature: user.signature,
-        photograph: user.photograph,
-        occupation: user.occupation,
-        employer: user.employer,
-        tin: user.tin,
-        sourceOfFunds: user.sourceOfFunds,
-        purposeOfAccount: user.purposeOfAccount,
       },
       token,
     };
@@ -124,6 +104,8 @@ const userLoginController = catchAsync(async (req, res) => {
       data: responseData,
     });
   } catch (error: any) {
+    console.error('Error during user authentication:', error);
+
     sendResponse(res, {
       statusCode: 400,
       success: false,
@@ -155,7 +137,7 @@ const getAllUsersController = catchAsync(async (req, res) => {
 
 const getUserDataController = catchAsync(async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming req.user is set by the authentication middleware
+    const userId = req.user._id;
     const userData = await UserServices.getUserData(userId);
     if (!userData) {
       sendResponse(res, {

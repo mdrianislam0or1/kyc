@@ -1,31 +1,45 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useInstituteLoginMutation } from "../../redux/features/auth/authApi";
 import styled from "styled-components";
 import NavigationBar from "../../components/layout/NavigationBar";
+import { useDispatch } from "react-redux";
+
+import { useInstituteLoginMutation } from "../../redux/features/FNInstitute/instituteApi";
+import {
+  setInstituteData,
+  setToken,
+} from "../../redux/features/FNInstitute/instituteSlice";
 
 const FinancialInstituteLogin = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    registrationNumber: "1234567890",
+    registrationNumber: "123456789012",
     password: "password123",
   });
 
   const [login] = useInstituteLoginMutation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const toastId = toast.loading("Logging in");
     try {
-      const res = await login(formData).unwrap();
-      toast.success("Logged in successfully", { id: toastId, duration: 2000 });
-      console.log(res);
-      // Redirect to dashboard or any other page after successful login
-      navigate(`/institute/${res.institute._id}`);
+      const response = await login(formData).unwrap();
+      const { success, message, data } = response;
+      toast.dismiss(toastId);
+      if (success) {
+        toast.success(message, { duration: 2000 });
+        dispatch(setInstituteData(data.institute));
+        dispatch(setToken(data.token));
+        localStorage.setItem("token", data.token);
+        navigate(`/${data?.institute?.role}/institute-profile`);
+      } else {
+        toast.error(message);
+      }
     } catch (error) {
+      toast.dismiss(toastId);
       toast.error("Error logging in");
     }
   };

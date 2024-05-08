@@ -1,14 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { useCurrentToken } from "../auth/authSlice";
 import { RootState } from "../../store";
+import { selectToken } from "./instituteSlice";
 
 export const instituteApi = createApi({
   reducerPath: "instituteApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers, { getState }) => {
-      const token = useCurrentToken(getState() as RootState);
+      const token = selectToken(getState() as RootState);
+      console.log("Token: ", token);
       if (token) {
         headers.set("Authorization", `${token}`);
       }
@@ -25,43 +26,36 @@ export const instituteApi = createApi({
         body: instituteData,
       }),
     }),
+
+    instituteRegister: builder.mutation({
+      query: (userInfo) => ({
+        url: "/fnInstitute/register",
+        method: "POST",
+        body: userInfo,
+      }),
+    }),
+    instituteLogin: builder.mutation({
+      query: (userInfo) => ({
+        url: "/fnInstitute/login",
+        method: "POST",
+        body: userInfo,
+      }),
+    }),
+
     getInstitutes: builder.query({
       query: () => "/fnInstitute/all",
     }),
 
-    getSingleInstitute: builder.query({
-      query: (instituteId) => `/fnInstitute/${instituteId}`,
-    }),
-
-    addUsersRequest: builder.mutation({
-      query: ({ instituteId, userNIDs }) => ({
-        url: "/fnInstitute/add-users-request",
-        method: "POST",
-        body: {
-          instituteId,
-          userNIDs,
-        },
-      }),
-    }),
-
-    verifyOTP: builder.mutation({
-      query: ({ instituteId, userNIDs, otp }) => ({
-        url: "/fnInstitute/verify-otp",
-        method: "POST",
-        body: {
-          instituteId,
-          userNIDs,
-          otp,
-        },
-      }),
+    getAllAddedUser: builder.query({
+      query: () => `/addInstituteUser/profile`,
     }),
   }),
 });
 
 export const {
   useAddInstituteMutation,
+  useInstituteLoginMutation,
+  useInstituteRegisterMutation,
   useGetInstitutesQuery,
-  useGetSingleInstituteQuery,
-  useAddUsersRequestMutation,
-  useVerifyOTPMutation,
+  useGetAllAddedUserQuery,
 } = instituteApi;

@@ -1,13 +1,10 @@
-import React from "react";
 import styled, { keyframes } from "styled-components";
 
-// Animation keyframes
 const bounceAnimation = keyframes`
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-15px); }
 `;
 
-// New animation keyframes for color change
 const colorChangeAnimation = keyframes`
   0% { background-color: #ff4d4d; }
   25% { background-color: #ffad4d; }
@@ -16,7 +13,6 @@ const colorChangeAnimation = keyframes`
   100% { background-color: #4dffff; }
 `;
 
-// Styled components
 const LoaderContainer = styled.div`
   display: flex;
   justify-content: center;

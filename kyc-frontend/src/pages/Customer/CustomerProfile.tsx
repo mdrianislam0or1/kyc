@@ -3,7 +3,6 @@ import { useGetCustomerQuery } from "../../redux/features/Customer/customerApi";
 import NavigationBar from "../../components/layout/NavigationBar";
 import Loader from "../../ui/Loader";
 
-// Styled Components
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;

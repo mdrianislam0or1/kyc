@@ -6,6 +6,7 @@ import {
   FinancialInstituteModel,
 } from './fnInstitute.interface';
 import { INSTITUTE_ROLE } from './fnInstitute.constant';
+import { USER_ROLE } from '../user/user.constant';
 
 const instituteSchema = new Schema<TFinancialInstitute>({
   name: {
@@ -33,8 +34,8 @@ const instituteSchema = new Schema<TFinancialInstitute>({
   },
   role: {
     type: String,
-    enum: Object.values(INSTITUTE_ROLE),
-    default: 'other',
+    enum: Object.values(USER_ROLE),
+    default: 'manager',
   },
 
   fullName: String,
@@ -42,8 +43,8 @@ const instituteSchema = new Schema<TFinancialInstitute>({
   contactNumber: String,
   website: String,
   financialLicense: String,
-  users: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Reference to users
-  verify: { type: Boolean, default: false }, // Verification status
+  users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  verify: { type: Boolean, default: false },
 });
 
 instituteSchema.pre('save', async function (next) {
@@ -55,11 +56,10 @@ instituteSchema.pre('save', async function (next) {
   next();
 });
 
-instituteSchema.statics.isPasswordMatched = async function (
-  plainTextPassword: string,
-  hashPassword: string,
+instituteSchema.statics.isFinancialInstituteExistById = async function (
+  instituteId,
 ) {
-  return await bcrypt.compare(plainTextPassword, hashPassword);
+  return await this.findById(instituteId);
 };
 
 export const FinancialInstitute = model<

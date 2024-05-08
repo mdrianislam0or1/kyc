@@ -64,7 +64,7 @@ const router = createBrowserRouter([
     element: <GetAllFinancialInstitute />,
   },
   {
-    path: "/institute/:instituteId",
+    path: "/manager/institute-profile",
     element: <FinancialInProfile />,
   },
   {

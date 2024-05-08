@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { device } from "../../styles/breakPoints";
 import { AiOutlineMenu } from "react-icons/ai";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
+import { useAppSelector } from "../../redux/hooks";
+import { logout, selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { Button } from "antd";
+import {
+  resetInstituteData,
+  selectInstitute,
+} from "../../redux/features/FNInstitute/instituteSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 interface NavElementsProps {
   showNavbar: boolean;
@@ -93,10 +101,26 @@ const LOGO = styled.div`
 const Navbar: React.FC = () => {
   const [showNavbar, setShowNavbar] = useState(false);
 
+  const navigate = useNavigate();
+
+  const instituteData = useSelector(selectInstitute);
+  console.log("instituteData", instituteData);
+
+  const dispatch = useDispatch();
+  const user = useAppSelector(selectCurrentUser);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(resetInstituteData());
+    navigate("/");
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
 
+  console.log("user", user);
   return (
     <NavStyle>
       <Container>
@@ -115,22 +139,35 @@ const Navbar: React.FC = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/customer-registration">Registration</Link>
-            </li>
-            <li>
               <Link to="/customer-login">Login</Link>
             </li>
             <li>
               <Link to="/institute-login">FN-Login</Link>
             </li>
+
+            {instituteData?.role === "manager" && (
+              <>
+                <li>
+                  <Link to="/manager/institute-profile">Institue Details</Link>
+                </li>
+
+                <li>
+                  <Link to="/add-users-request"> Add Customer</Link>
+                </li>
+              </>
+            )}
+            {instituteData?.role === "superAdmin" && (
+              <>
+                <li>
+                  <Link to="/all-institute">Financial Institute</Link>
+                </li>
+              </>
+            )}
+
             <li>
-              <Link to="/all-institute">Financial Institute</Link>
-            </li>
-            <li>
-              <Link to="/add-users-request"> Add Customer</Link>
-            </li>
-            <li>
-              <Link to="/institute/:id">Institue Details</Link>
+              <Button onClick={handleLogout} type="primary" danger>
+                Logout
+              </Button>
             </li>
           </ul>
         </NavElements>

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { useAddUsersRequestMutation } from "../../redux/features/FNInstitute/instituteApi";
+
 import { Link } from "react-router-dom";
 import NavigationBar from "../../components/layout/NavigationBar";
 import styled from "styled-components";
+import { useAddUsersToInstituteMutation } from "../../redux/features/AddUserInstitute/AddUserApi";
+import { useSelector } from "react-redux";
+import { selectInstitute } from "../../redux/features/FNInstitute/instituteSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -65,10 +68,12 @@ const SuccessMessage = styled.div`
 `;
 
 const AddUserRequest = () => {
-  const [instituteId, setInstituteId] = useState("");
+  const instituteData = useSelector(selectInstitute);
+  console.log("instituteData", instituteData);
+  const [instituteId, setInstituteId] = useState(instituteData?._id || "");
   const [userNIDs, setUserNIDs] = useState<string[]>([]);
   const [addUsersRequest, { isLoading, isError, isSuccess }] =
-    useAddUsersRequestMutation();
+    useAddUsersToInstituteMutation();
 
   const handleAddUsers = async () => {
     try {

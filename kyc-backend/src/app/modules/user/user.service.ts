@@ -1,8 +1,8 @@
-// user.service.ts
 import httpStatus from 'http-status';
 import ApplicationError from '../../errorHandler/ApplicationError';
 import { TUser } from './user.interface';
 import { User } from './user.model';
+import bcrypt from 'bcrypt';
 
 const createUserIntoDB = async (userData: TUser): Promise<TUser> => {
   const user = new User({
@@ -11,6 +11,7 @@ const createUserIntoDB = async (userData: TUser): Promise<TUser> => {
     email: userData.email,
     password: userData.password,
     role: userData.role || 'user',
+    otp: null,
     fullName: userData.fullName,
     dateOfBirth: userData.dateOfBirth,
     nationality: userData.nationality,
@@ -36,24 +37,18 @@ const loginUserFromDB = async (nid: string, password: string) => {
   try {
     const user = await User.findOne({ nid }).select('+password');
     if (!user) {
-      throw new Error('Invalid login credentials');
+      throw new Error('User not found');
     }
-    const isPasswordMatched = await User.isPasswordMatched(
-      password,
-      user.password,
-    );
+
+    const isPasswordMatched = await bcrypt.compare(password, user.password);
     if (!isPasswordMatched) {
-      throw new ApplicationError(
-        httpStatus.UNAUTHORIZED,
-        'Invalid login credentials',
-      );
+      throw new Error('Invalid password');
     }
+
     return user;
   } catch (error) {
-    throw new ApplicationError(
-      httpStatus.UNAUTHORIZED,
-      'Invalid login credentials',
-    );
+    console.error('Error during user authentication:', error);
+    throw new Error('Invalid login credentials');
   }
 };
 

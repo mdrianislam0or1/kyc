@@ -1,45 +1,44 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 
-export type TInstitute = {
+interface Institute {
   _id: string;
-  name: string;
   registrationNumber: string;
-  email: string;
-  password: string;
   role: string;
-  fullName: string;
-  address: string;
-  contactNumber: string;
-  website: string;
-  financialLicense: string;
-};
+  email: string;
+}
 
-const initialState: TInstitute = {
-  _id: "",
-  name: "",
-  registrationNumber: "",
-  email: "",
-  password: "",
-  role: "",
-  fullName: "",
-  address: "",
-  contactNumber: "",
-  website: "",
-  financialLicense: "",
+interface InstituteState {
+  institute: Institute | null;
+  token: string | null;
+}
+
+const initialState: InstituteState = {
+  institute: null,
+  token: null,
 };
 
 const instituteSlice = createSlice({
   name: "institute",
   initialState,
   reducers: {
-    setInstituteData: (state, action) => {
-      return { ...state, ...action.payload };
+    setInstituteData: (state, action: PayloadAction<Institute>) => {
+      state.institute = action.payload;
     },
-    resetInstituteData: () => initialState,
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
+    },
+    resetInstituteData: (state) => {
+      state.institute = null;
+      state.token = null;
+    },
   },
 });
 
-export const { setInstituteData, resetInstituteData } = instituteSlice.actions;
+export const { setInstituteData, setToken, resetInstituteData } =
+  instituteSlice.actions;
 
 export default instituteSlice.reducer;
+
+export const selectInstitute = (state: RootState) => state.institute.institute;
+export const selectToken = (state: RootState) => state.institute.token;

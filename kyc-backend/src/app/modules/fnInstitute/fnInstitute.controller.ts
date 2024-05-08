@@ -3,7 +3,7 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { TFinancialInstitute } from './fnInstitute.interface';
 import { InstituteServices } from './fnInstitute.service';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
 import ApplicationError from '../../errorHandler/ApplicationError';
 
@@ -46,6 +46,7 @@ const instituteRegisterController = catchAsync(async (req, res) => {
 const instituteLoginController = catchAsync(async (req, res) => {
   try {
     const { registrationNumber, password } = req.body;
+
     const institute = await InstituteServices.loginInstituteFromDB(
       registrationNumber,
       password,
@@ -57,11 +58,6 @@ const instituteLoginController = catchAsync(async (req, res) => {
         registrationNumber: institute.registrationNumber,
         role: institute.role,
         email: institute.email,
-        fullName: institute.fullName,
-        address: institute.address,
-        contactNumber: institute.contactNumber,
-        website: institute.website,
-        financialLicense: institute.financialLicense,
       },
       config.jwt_secret as string,
       {
@@ -69,28 +65,25 @@ const instituteLoginController = catchAsync(async (req, res) => {
       },
     );
 
+    const responseData = {
+      institute: {
+        _id: institute._id,
+        registrationNumber: institute.registrationNumber,
+        role: institute.role,
+        email: institute.email,
+      },
+      token,
+    };
+
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Financial institute login successful',
-      data: {
-        institute: {
-          _id: institute._id,
-          registrationNumber: institute.registrationNumber,
-          role: institute.role,
-          email: institute.email,
-          fullName: institute.fullName,
-          address: institute.address,
-          contactNumber: institute.contactNumber,
-          website: institute.website,
-          financialLicense: institute.financialLicense,
-        },
-        token,
-      },
+      data: responseData,
     });
   } catch (error: any) {
     sendResponse(res, {
-      statusCode: 400,
+      statusCode: httpStatus.BAD_REQUEST,
       success: false,
       message: error.message,
       data: null,
@@ -166,10 +159,21 @@ const verifyAndaddUsersToInstituteController = catchAsync(async (req, res) => {
 
 const getSingleInstituteWithUsersController = catchAsync(async (req, res) => {
   try {
-    const instituteId = req.params.id; // Assuming the instituteId is passed as a route parameter
-    const instituteWithUsers =
+    const decodedToken = req.user as JwtPayload;
+    const instituteId = decodedToken._id;
+
+    const instituteWithUsers: TFinancialInstitute | null =
       await InstituteServices.getSingleInstituteWithUsers(instituteId);
-    sendResponse(res, {
+
+    if (!instituteWithUsers) {
+      return sendResponse(res, {
+        statusCode: httpStatus.NOT_FOUND,
+        success: false,
+        message: 'Institute not found',
+      });
+    }
+
+    return sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Institute with verified users retrieved successfully',

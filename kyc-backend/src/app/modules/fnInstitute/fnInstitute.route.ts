@@ -2,6 +2,7 @@ import express from 'express';
 import validateRequest from '../../middleware/validateRequest';
 import { createInstituteValidation } from './fnInstitute.validation';
 import { InstituteControllers } from './fnInstitute.controller';
+import fnAuth from '../../middleware/fnAuth';
 
 const router = express.Router();
 
@@ -23,6 +24,10 @@ router.post(
   InstituteControllers.verifyAndaddUsersToInstituteController,
 );
 
-router.get('/:id', InstituteControllers.getSingleInstituteWithUsersController);
+router.get(
+  '/profile',
+  fnAuth('manager'),
+  InstituteControllers.getSingleInstituteWithUsersController,
+);
 
 export const InstituteRoutes = router;

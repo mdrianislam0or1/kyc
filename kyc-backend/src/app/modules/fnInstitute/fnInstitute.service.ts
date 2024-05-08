@@ -4,7 +4,7 @@ import { TFinancialInstitute } from './fnInstitute.interface';
 import { FinancialInstitute } from './fnInstitute.model';
 import { User } from '../user/user.model';
 import { sendOTP } from '../../utils/sendOTP';
-
+import bcrypt from 'bcrypt';
 const createInstituteIntoDB = async (
   instituteData: TFinancialInstitute,
 ): Promise<TFinancialInstitute> => {
@@ -17,28 +17,24 @@ const loginInstituteFromDB = async (
   password: string,
 ) => {
   try {
-    const institute = await FinancialInstitute.findOne({
-      registrationNumber,
-    }).select('+password');
+    const institute = await FinancialInstitute.findOne({ registrationNumber });
+
     if (!institute) {
       throw new Error('Invalid login credentials');
     }
-    const isPasswordMatched = await FinancialInstitute.isPasswordMatched(
+
+    const isPasswordMatched = await bcrypt.compare(
       password,
       institute.password,
     );
+
     if (!isPasswordMatched) {
-      throw new ApplicationError(
-        httpStatus.UNAUTHORIZED,
-        'Invalid login credentials',
-      );
+      throw new Error('Invalid login credentials');
     }
+
     return institute;
   } catch (error) {
-    throw new ApplicationError(
-      httpStatus.UNAUTHORIZED,
-      'Invalid login credentials',
-    );
+    throw new Error('Invalid login credentials');
   }
 };
 
@@ -69,12 +65,12 @@ const addUsersRequestToInstitute = async (
 
       if (user) {
         user.otp = OTP;
-        institute.verify = false;
         await sendOTP(user.email, OTP);
         await user.save();
       }
     }
 
+    institute.verify = true;
     await institute.save();
   } catch (error) {
     throw new ApplicationError(
@@ -95,22 +91,20 @@ const verifyAndaddUsersToInstitute = async (
       throw new Error('Financial institute not found');
     }
 
+    if (!institute.verify) {
+      throw new Error('Institute is not verified');
+    }
+
     for (const nid of userNIDs) {
       const user = await User.findOne({ nid });
 
-      if (user && user.otp === otp && !institute.users.includes(user._id)) {
-        institute.users.push(user._id);
-        institute.verify = true;
+      if (user && user.otp === otp && !institute?.users?.includes(user._id)) {
+        institute?.users?.push(user._id);
         await user.save();
-        await institute.save();
       }
-      // if (user && institute.users.includes(user._id)) {
-      //   throw new ApplicationError(
-      //     httpStatus.INTERNAL_SERVER_ERROR,
-      //     'duplicate addition users to institute',
-      //   );
-      // }
     }
+
+    await institute.save();
   } catch (error) {
     throw new ApplicationError(
       httpStatus.INTERNAL_SERVER_ERROR,

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { useVerifyOTPMutation } from "../../redux/features/FNInstitute/instituteApi";
 import NavigationBar from "../../components/layout/NavigationBar";
 import styled from "styled-components";
+import { useVerifyOTPAndAddMutation } from "../../redux/features/AddUserInstitute/AddUserApi";
+import { selectInstitute } from "../../redux/features/FNInstitute/instituteSlice";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   max-width: 400px;
@@ -38,10 +40,12 @@ const Error = styled.div`
 `;
 
 const VerifyCustomer = () => {
-  const [instituteId, setInstituteId] = useState("");
+  const instituteData = useSelector(selectInstitute);
+  console.log("instituteData", instituteData);
+  const [instituteId, setInstituteId] = useState(instituteData?._id || "");
   const [userNIDs, setUserNIDs] = useState<string[]>([]);
   const [otp, setOTP] = useState("");
-  const [verifyOTP, { isLoading, isError }] = useVerifyOTPMutation();
+  const [verifyOTP, { isLoading, isError }] = useVerifyOTPAndAddMutation();
 
   const handleVerifyOTP = async () => {
     try {

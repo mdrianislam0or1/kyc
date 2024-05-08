@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useGetInstitutesQuery } from "../../redux/features/FNInstitute/instituteApi";
 import Loader from "../../ui/Loader";
 import GetAllFnInstituteCard from "../../components/card/GetAllFnInstituteCard";
-import { TInstitute } from "../../redux/features/FNInstitute/instituteSlice";
+
 import NavigationBar from "../../components/layout/NavigationBar";
 
 const GetAllFinancialInstitute = () => {
@@ -31,7 +32,7 @@ const GetAllFinancialInstitute = () => {
   if (!isLoading && !isError && institutes?.data) {
     content = (
       <Container>
-        {institutes.data.map((institute: TInstitute) => (
+        {institutes.data.map((institute: any) => (
           <GetAllFnInstituteCard key={institute._id} institute={institute} />
         ))}
       </Container>

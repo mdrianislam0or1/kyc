@@ -44,8 +44,8 @@ const RegisterLink = styled.p`
 const CustomerLogin = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [nid, setNid] = useState("1111");
-  const [password, setPassword] = useState("password123");
+  const [nid, setNid] = useState("11");
+  const [password, setPassword] = useState("11");
   const [loading, setLoading] = useState(false);
 
   const [login] = useLoginMutation();

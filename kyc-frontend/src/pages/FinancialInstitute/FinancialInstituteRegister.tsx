@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useInstituteRegisterMutation } from "../../redux/features/auth/authApi";
+
 import styled from "styled-components";
 import NavigationBar from "../../components/layout/NavigationBar";
+import { useInstituteRegisterMutation } from "../../redux/features/FNInstitute/instituteApi";
 
 const FinancialInstituteRegister = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const FinancialInstituteRegister = () => {
     registrationNumber: "1234567890",
     email: "info@abcbank.com",
     password: "password123",
-    role: "bank",
+    role: "manager",
     fullName: "ABC Bank Limited",
     address: "123 Main St, City",
     contactNumber: "123-456-7890",
@@ -31,7 +32,7 @@ const FinancialInstituteRegister = () => {
       const res = await register(formData).unwrap();
       toast.success("Registered successfully", { id: toastId, duration: 2000 });
       console.log(res);
-      navigate(`/login`);
+      navigate(`/institute-login`);
     } catch (error) {
       toast.error("Error registering");
     }

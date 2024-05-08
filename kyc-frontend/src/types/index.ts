@@ -21,8 +21,3 @@ export type User = {
   sourceOfFunds: string;
   purposeOfAccount: string;
 };
-
-//   export type UserWithToken {
-//     user: User;
-//     token: string;
-//   }
